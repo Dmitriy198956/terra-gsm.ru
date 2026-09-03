@@ -9,6 +9,7 @@
   const formSuccess = document.querySelector('#form-success');
   const modalTitle = document.querySelector('#modal-title');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mobileReviews = window.matchMedia('(max-width: 840px)');
 
   // Compact mobile navigation.
   const closeMenu = () => {
@@ -114,7 +115,11 @@
     currentReview = (index + reviewCards.length) % reviewCards.length;
     reviewCards.forEach((card, cardIndex) => {
       card.classList.toggle('is-active', cardIndex === currentReview);
-      card.setAttribute('aria-hidden', String(cardIndex !== currentReview));
+      if (mobileReviews.matches) {
+        card.setAttribute('aria-hidden', String(cardIndex !== currentReview));
+      } else {
+        card.removeAttribute('aria-hidden');
+      }
     });
     reviewDots.forEach((dot, dotIndex) => {
       const active = dotIndex === currentReview;
@@ -126,6 +131,7 @@
   prevReview?.addEventListener('click', () => setReview(currentReview - 1));
   nextReview?.addEventListener('click', () => setReview(currentReview + 1));
   reviewDots.forEach((dot) => dot.addEventListener('click', () => setReview(Number(dot.dataset.reviewDot))));
+  mobileReviews.addEventListener?.('change', () => setReview(currentReview));
   setReview(0);
 
   // Current year in the footer.
